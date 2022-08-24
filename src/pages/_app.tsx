@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import "@styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { ThemeProvider } from "@mui/material";
+import theme from "ui/themes/theme";
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -13,7 +15,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>e-diaristas</title>
       </Head>
-      <Component {...pageProps} />
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </>
   );
 }
