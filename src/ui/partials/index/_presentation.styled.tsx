@@ -1,4 +1,5 @@
 import { styled } from '@mui/material/styles';
+import { PropsWithChildren } from 'react';
 import { Container } from '@mui/material';
 import Link, { LinkProps } from 'ui/components/navigation/Link/Link';
 import RoundedButton from 'ui/components/inputs/RoundedButton/RoundedButton';
@@ -93,7 +94,7 @@ export const SectionDescription = styled('p')`
   }
 `;
 
-export const SectionButton = styled((props: LinkProps) => (
+export const SectionButton = styled((props: PropsWithChildren<LinkProps>) => (
   <Link {...props} Component={RoundedButton} />
 ))`
   grid-area: button;

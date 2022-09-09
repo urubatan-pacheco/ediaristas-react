@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   HeaderAppBar,
   HeaderLogo,
   ButtonsContainer,
   HeaderDrawer,
-} from "./Header.style";
+} from './Header.style';
 import {
   Container,
   IconButton,
@@ -12,36 +12,36 @@ import {
   MenuItem,
   Divider,
   Toolbar,
-} from "@mui/material";
-import Link from "ui/components/navigation/Link/Link";
-import RoundedButton from "ui/components/inputs/RoundedButton/RoundedButton";
-import useIsMobile from "data/hooks/useIsMobile";
+} from '@mui/material';
+import Link from 'ui/components/navigation/Link/Link';
+import RoundedButton from 'ui/components/inputs/RoundedButton/RoundedButton';
+import useIsMobile from 'data/hooks/useIsMobile';
 
-const Header = () => {
+const Header: React.FC = () => {
   const isMobile = useIsMobile();
 
   return isMobile ? <HeaderMobile /> : <HeaderDesktop />;
 };
 
-const HeaderDesktop = () => {
+const HeaderDesktop: React.FC = () => {
   return (
     <HeaderAppBar>
       <Toolbar component={Container}>
-        <Link href={"/"}>
-          <HeaderLogo src="/img/logos/logo.svg" alt={"e-diaristas"} />
+        <Link href='/'>
+          <HeaderLogo src='/img/logos/logo.svg' alt='e-diaristas' />
         </Link>
         <div>&nbsp;</div>
         <div>&nbsp;</div>
         <ButtonsContainer>
           <Link
-            href={"/cadastro/diarista"}
+            href='/cadastro/diarista'
             Component={RoundedButton}
-            mui={{ color: "primary", variant: "contained" }}
+            mui={{ color: 'primary', variant: 'contained' }}
           >
             Seja um(a) diarista
           </Link>
 
-          <Link href={"/login"} Component={RoundedButton}>
+          <Link href='/login' Component={RoundedButton}>
             Login
           </Link>
         </ButtonsContainer>
@@ -56,14 +56,14 @@ const HeaderMobile = () => {
     <HeaderAppBar>
       <Toolbar component={Container}>
         <IconButton
-          edge={"start"}
-          color={"inherit"}
+          edge={'start'}
+          color={'inherit'}
           onClick={() => setDrawerOpen(true)}
         >
-          <i className={"twf-bars"} />
+          <i className={'twf-bars'} />
         </IconButton>
-        <Link href={"/"}>
-          <HeaderLogo src="/img/logos/logo.svg" alt={"e-diaristas"} />
+        <Link href={'/'}>
+          <HeaderLogo src='/img/logos/logo.svg' alt={'e-diaristas'} />
         </Link>
         <HeaderDrawer
           open={isDrawerOpen}
@@ -71,14 +71,14 @@ const HeaderMobile = () => {
           onClick={() => setDrawerOpen(false)}
         >
           <MenuList>
-            <Link href={"/login"} Component={MenuItem}>
+            <Link href={'/login'} Component={MenuItem}>
               Login
             </Link>
             <Divider />
             <Link
-              href={"/cadastro/diarista"}
+              href={'/cadastro/diarista'}
               Component={MenuItem}
-              mui={{ color: "primary", variant: "contained" }}
+              mui={{ color: 'primary', variant: 'contained' }}
             >
               Seja um(a) diarista
             </Link>

@@ -7,9 +7,9 @@ import {
   FooterSocialList,
   SocialButton,
   FooterGrid,
-} from "./Footer.style";
-import { List, Box, Typography } from "@mui/material";
-import Link from "ui/components/navigation/Link/Link";
+} from './Footer.style';
+import { List, Box, Typography } from '@mui/material';
+import Link from 'ui/components/navigation/Link/Link';
 
 const Footer = () => {
   return (
@@ -20,35 +20,35 @@ const Footer = () => {
           <List>
             <FooterListItem>
               <Link
-                href={"/encontrar-diarista"}
-                mui={{ color: "inherit", variant: "body2" }}
+                href='/encontrar-diarista'
+                mui={{ color: 'inherit', variant: 'body2' }}
               >
                 Encontrar um(a) diarista
               </Link>
             </FooterListItem>
             <FooterListItem>
               <Link
-                href={"/cadastro/diarista"}
-                mui={{ color: "inherit", variant: "body2" }}
+                href='/cadastro/diarista'
+                mui={{ color: 'inherit', variant: 'body2' }}
               >
                 Seja um(a) diarista
               </Link>
             </FooterListItem>
             <FooterListItem>
-              <Link href={"/"} mui={{ color: "inherit", variant: "body2" }}>
+              <Link href='/' mui={{ color: 'inherit', variant: 'body2' }}>
                 Porquê usar o E-diarista
               </Link>
             </FooterListItem>
             <FooterListItem>
-              <Link href={"/"} mui={{ color: "inherit", variant: "body2" }}>
+              <Link href='/' mui={{ color: 'inherit', variant: 'body2' }}>
                 Principais dúvidas
               </Link>
             </FooterListItem>
           </List>
         </div>
-        <Box sx={{ maxWidth: "400px" }}>
+        <Box sx={{ maxWidth: '400px' }}>
           <FooterTitle>Quem Somos</FooterTitle>
-          <Typography variant={"body2"} sx={{ mt: 2 }}>
+          <Typography variant='body2' sx={{ mt: 2 }}>
             E-Diaristas te ajuda a encontrar um profissional perfeito para
             realizar a limpeza da sua casa. Garantimos o(a) melhor profissional
             com total segurança e praticidade! São milhares de clientes
@@ -60,13 +60,13 @@ const Footer = () => {
             <FooterTitle>Baixe nossos aplicativos</FooterTitle>
             <AppList>
               <li>
-                <a href={"/"} target={"_blank"} rel={"noopener noreferrer"}>
-                  <img src={"/img/logos/app-store.png"} alt={"AppStore"} />
+                <a href='/' target={'_blank'} rel={'noopener noreferrer'}>
+                  <img src={'/img/logos/app-store.png'} alt={'AppStore'} />
                 </a>
               </li>
               <li>
-                <a href={"/"} target={"_blank"} rel={"noopener noreferrer"}>
-                  <img src={"/img/logos/google-play.png"} alt={"Google Play"} />
+                <a href='/' target={'_blank'} rel={'noopener noreferrer'}>
+                  <img src={'/img/logos/google-play.png'} alt={'Google Play'} />
                 </a>
               </li>
             </AppList>
@@ -75,18 +75,18 @@ const Footer = () => {
             <FooterTitle>Redes sociais</FooterTitle>
             <FooterSocialList>
               <FooterListItem>
-                <SocialButton href={"/"}>
-                  <i className={"twf-facebook-f"} />
+                <SocialButton href='/'>
+                  <i className='twf-facebook-f' />
                 </SocialButton>
               </FooterListItem>
               <FooterListItem>
-                <SocialButton href={"/"}>
-                  <i className={"twf-instagram"} />
+                <SocialButton href='/'>
+                  <i className='twf-instagram' />
                 </SocialButton>
               </FooterListItem>
               <FooterListItem>
-                <SocialButton href={"/"}>
-                  <i className={"twf-youtube"} />
+                <SocialButton href='/'>
+                  <i className='twf-youtube' />
                 </SocialButton>
               </FooterListItem>
             </FooterSocialList>

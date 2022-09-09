@@ -1,17 +1,17 @@
-import Advantages from "@partials/index/_advantages";
-import FrequentQuestions from "@partials/index/_frequent-questions";
-import Presentation from "@partials/index/_presentation";
-import { GetStaticProps } from "next";
+import Advantages from '@partials/index/_advantages';
+import FrequentQuestions from '@partials/index/_frequent-questions';
+import Presentation from '@partials/index/_presentation';
+import { GetStaticProps, NextPage } from 'next';
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      title: "início",
+      title: 'início',
     },
   };
 };
 
-export default function Index() {
+const Index: NextPage<{ title: string }> = (props) => {
   return (
     <div>
       <Presentation />
@@ -19,4 +19,6 @@ export default function Index() {
       <FrequentQuestions />
     </div>
   );
-}
+};
+
+export default Index;

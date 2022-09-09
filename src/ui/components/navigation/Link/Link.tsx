@@ -1,22 +1,21 @@
-import React from "react";
-import NextLink, { LinkProps as NextLinkProps } from "next/link"; // Link é export default podemos renomear de cara
-import Router from "next/router";
+import React from 'react';
+import { PropsWithChildren } from 'react';
+import NextLink, { LinkProps as NextLinkProps } from 'next/link'; // Link é export default podemos renomear de cara
+import Router from 'next/router';
 import {
   Link as MuiLink,
   LinkProps as MuiLinkProps,
   ButtonProps,
-} from "@mui/material";
+} from '@mui/material';
 
 export interface LinkProps {
   href: string;
-  children: React.ReactNode;
   mui?: MuiLinkProps | ButtonProps;
   next?: NextLinkProps;
   Component?: React.ElementType;
-  onClick?: () => void;
 }
 
-const Link: React.FC<LinkProps> = ({
+const Link: React.FC<PropsWithChildren<LinkProps>> = ({
   children,
   href,
   mui,

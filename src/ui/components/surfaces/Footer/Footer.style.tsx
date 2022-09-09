@@ -1,4 +1,5 @@
-import { styled } from "@mui/material/styles";
+import { styled } from '@mui/material/styles';
+import React, { PropsWithChildren } from 'react';
 import {
   Typography,
   List,
@@ -9,30 +10,30 @@ import {
   LinkProps,
   IconButton,
   Container,
-} from "@mui/material";
+} from '@mui/material';
 
-export const FooterContainer = styled("footer")`
+export const FooterContainer = styled('footer')`
   background-color: ${({ theme }) => theme.palette.primary.main};
   color: ${({ theme }) => theme.palette.primary.contrastText};
   padding: ${({ theme }) => theme.spacing(4)} 0;
   margin-top: auto;
 `;
 
-export const FooterTitle = styled((props: any) => (
-  <Typography variant={"body2"} component={"h2"} {...props} />
+export const FooterTitle = styled((props: PropsWithChildren) => (
+  <Typography variant={'body2'} component={'h2'} {...props} />
 ))`
   font-weight: bold;
 `;
 
-export const FooterListItem = styled((props: ListItemProps) => (
+export const FooterListItem = styled((props: PropsWithChildren) => (
   <ListItem disableGutters {...props} />
 ))``;
 
-export const SocialContainer = styled("div")`
+export const SocialContainer = styled('div')`
   display: flex;
   flex-direction: column;
   grid-gap: ${({ theme }) => theme.spacing(1.5)};
-  ${({ theme }) => theme.breakpoints.down("md")} {
+  ${({ theme }) => theme.breakpoints.down('md')} {
     width: 100%;
     flex-direction: row-reverse;
     justify-content: space-between;
@@ -43,13 +44,13 @@ export const SocialContainer = styled("div")`
   } ;
 `;
 
-export const AppList = styled("ul")`
+export const AppList = styled('ul')`
   display: flex;
   gap: ${({ theme }) => theme.spacing()};
   list-style-type: none;
   padding: 0;
-  margin: ${({ theme }) => theme.spacing(2)} + " 0 " +
-    ${({ theme }) => theme.spacing(2)};
+  margin: ${({ theme }) => theme.spacing(2)} + ' 0 ' +
+    ${({ theme }) => theme.spacing(3)};
   img {
     width: 112px;
   }
@@ -64,8 +65,8 @@ export const FooterSocialList = styled(List)`
 export const SocialButton = styled((props: LinkProps<typeof IconButton>) => (
   <Link
     component={IconButton}
-    target={"_blank"}
-    rel={"noopener noreferrer"}
+    target={'_blank'}
+    rel={'noopener noreferrer'}
     {...props}
   />
 ))`
