@@ -65,7 +65,7 @@ const FrequentQuestions = () => {
             onChange={() => changeOpenAcoordion(index)}
           >
             <AccordionSummary expandIcon={<i className={getIcon(index)} />}>
-              <Typography>{question.question}</Typography>
+              <Typography color={'primary'}>{question.question}</Typography>
             </AccordionSummary>
             <AccordionDetails>{question.answer}</AccordionDetails>
           </AccordionStyled>

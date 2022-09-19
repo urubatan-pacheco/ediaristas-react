@@ -27,9 +27,8 @@ export const HeaderAppBar = styled((props: AppBarProps) => (
 
 export const HeaderLogo = styled("img")`
   height: 25px;
-  ${({ theme }) => theme.breakpoints.up("md")} {
-    height: 47px;
-  } ;
+
+  
 `;
 
 export const ButtonsContainer = styled("div")`
