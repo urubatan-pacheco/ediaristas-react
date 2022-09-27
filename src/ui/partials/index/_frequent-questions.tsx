@@ -11,7 +11,7 @@ import {
   SectionTitle,
   Wave,
   AccordionStyled,
-} from './_frequent-questions.styled';
+} from './_frequent-questions.style';
 
 const questionsList = [
   {

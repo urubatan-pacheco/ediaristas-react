@@ -3,7 +3,7 @@ import {
   PageSubtitleStyled,
   PageTitleContainer,
   PageTitleStyled,
-} from './PageTitle.styled';
+} from './PageTitle.style';
 
 export interface PageTitleProps {
   title: string;
