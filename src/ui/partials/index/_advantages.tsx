@@ -5,7 +5,7 @@ import {
   ListItemTextStyled,
   SectionTitle,
   StyledList,
-} from './_advantages.styled';
+} from './_advantages.style';
 import { Container, ListItem, ListItemAvatar, Typography } from '@mui/material';
 import React from 'react';
 

@@ -7,7 +7,7 @@ import {
   SectionDescription,
   SectionPictureContainer,
   SectionTitle,
-} from './_presentation.styled';
+} from './_presentation.style';
 
 const Presentation = () => {
   const [cleanerPicture, setCleanerPicture] = useState('');
