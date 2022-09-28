@@ -18,9 +18,11 @@
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@mui/material": "^5.10.1",
+    "@types/react-input-mask": "^3.0.1",
     "next": "12.2.5",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-input-mask-3.0": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.13",

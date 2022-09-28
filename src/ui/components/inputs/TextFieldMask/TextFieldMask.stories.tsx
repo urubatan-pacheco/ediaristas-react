@@ -1,0 +1,18 @@
+import React from 'react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import TextFieldMask from './TextFieldMask';
+
+export default {
+  title: 'inputs/TextFieldMask',
+  comppnent: TextFieldMask,
+} as ComponentMeta<typeof TextFieldMask>;
+
+const Template: ComponentStory<typeof TextFieldMask> = (args) => (
+  <TextFieldMask {...args} />
+);
+
+export const Default = Template.bind({});
+
+Default.args = {
+  mask: '99/99/9999',
+};
