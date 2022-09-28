@@ -1,36 +1,36 @@
-import { createTheme } from "@mui/material";
+import { createTheme } from '@mui/material';
 
 const theme = createTheme({
   palette: {
     primary: {
-      light: "#9661ff",
-      main: "#6B2AEE",
-      dark: "#581ECD",
+      light: '#9661ff',
+      main: '#6B2AEE',
+      dark: '#581ECD',
     },
     secondary: {
-      light: "#2bfff2",
-      main: "#02E7D9",
-      dark: "#1dd6cb",
+      light: '#2bfff2',
+      main: '#02E7D9',
+      dark: '#1dd6cb',
     },
     text: {
-      primary: "#707070",
-      secondary: "#9B9B9B",
+      primary: '#707070',
+      secondary: '#9B9B9B',
     },
     error: {
-      main: "#FC3C00",
+      main: '#FC3C00',
     },
     warning: {
-      main: "#FCA600",
+      main: '#FCA600',
     },
     success: {
-      main: "#00D34D",
+      main: '#00D34D',
     },
     grey: {
-      50: "#FAFAFA",
-      100: "#F0F0F0",
-      200: "#D7D9DD",
-      300: "#C4C4C4",
-      400: "#9B9B9B",
+      50: '#FAFAFA',
+      100: '#F0F0F0',
+      200: '#D7D9DD',
+      300: '#C4C4C4',
+      400: '#9B9B9B',
     },
   },
   breakpoints: {
@@ -43,10 +43,31 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Poppins, Roboto, sans-serif",
+    fontFamily: 'Poppins, Roboto, sans-serif',
   },
   shape: {
-    borderRadius: "3px",
+    borderRadius: '3px',
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          borderWidth: '2px',
+          ':hover': {
+            borderWidth: '2px',
+          },
+        },
+      },
+      variants: [
+        {
+          props: { variant: 'contained', color: 'secondary' },
+          style: {
+            color: 'white',
+          },
+        },
+      ],
+    },
   },
 });
 
