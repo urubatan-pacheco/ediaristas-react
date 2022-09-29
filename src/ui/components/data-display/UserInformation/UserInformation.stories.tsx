@@ -4,7 +4,7 @@ import UserInformation from './UserInformation';
 
 export default {
   title: 'data-display/UserInformation',
-  comppnent: UserInformation,
+  component: UserInformation,
 } as ComponentMeta<typeof UserInformation>;
 
 const Template: ComponentStory<typeof UserInformation> = (args) => (

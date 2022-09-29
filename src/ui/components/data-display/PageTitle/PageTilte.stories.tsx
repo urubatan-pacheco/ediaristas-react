@@ -4,7 +4,7 @@ import PageTitle from './PageTitle';
 
 export default {
   title: 'data-display/PageTitle',
-  comppnent: PageTitle,
+  component: PageTitle,
 } as ComponentMeta<typeof PageTitle>;
 
 const Template: ComponentStory<typeof PageTitle> = (args) => (

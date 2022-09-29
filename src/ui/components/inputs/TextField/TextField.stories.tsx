@@ -4,7 +4,7 @@ import TextField from './TextField';
 
 export default {
   title: 'inputs/TextField',
-  comppnent: TextField,
+  component: TextField,
 } as ComponentMeta<typeof TextField>;
 
 const Template: ComponentStory<typeof TextField> = (args) => (
@@ -13,5 +13,4 @@ const Template: ComponentStory<typeof TextField> = (args) => (
 
 export const Default = Template.bind({});
 
-Default.args = {
-};
+Default.args = {};
