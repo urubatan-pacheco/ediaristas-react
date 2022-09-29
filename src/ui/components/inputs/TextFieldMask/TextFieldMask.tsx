@@ -17,16 +17,11 @@ const TextFieldMask: React.FC<PropsWithChildren<TextFieldMaskProps>> = ({
   ...props
 }) => {
   return (
-    <>
-      <InputMask
-        mask={mask}
-        value={value as string}
-        onChange={onChange}
-        onBlur={onBlur}
-      >
-        <TextField {...props} variant={'outlined'} />
-      </InputMask>
-    </>
+    <InputMask mask={mask} value={value} onChange={onChange} onBlur={onBlur}>
+      {() => {
+        return <TextField {...props} variant={'outlined'} />;
+      }}
+    </InputMask>
   );
 };
 

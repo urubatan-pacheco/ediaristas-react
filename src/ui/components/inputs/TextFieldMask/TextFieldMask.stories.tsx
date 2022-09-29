@@ -4,7 +4,7 @@ import TextFieldMask from './TextFieldMask';
 
 export default {
   title: 'inputs/TextFieldMask',
-  comppnent: TextFieldMask,
+  component: TextFieldMask,
 } as ComponentMeta<typeof TextFieldMask>;
 
 const Template: ComponentStory<typeof TextFieldMask> = (args) => (

@@ -26,9 +26,6 @@ module.exports = {
     config.resolve.alias['emotion-theming'] = toPath(
       'node_modules/@emotion/react'
     );
-    config.resolve.alias['react-input-mask'] = toPath(
-      'node_modules/react-input-mask-3.0'
-    );
     return config;
   },
 };
