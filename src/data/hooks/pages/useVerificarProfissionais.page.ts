@@ -23,6 +23,7 @@ export default function useVerificarProfissionais() {
       }>(`/api/diaristas/localidades?cep=${cep.replace(/\D/g, '')}`);
 
       setBuscaFeita(true);
+      setCarregando(false);
       setDiaristas(data.diaristas);
       setDiaristasRestantes(data.quantidade_diaristas_restante);
     } catch (error) {

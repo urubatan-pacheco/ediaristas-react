@@ -21,9 +21,10 @@ export interface UserInformationProps {
 const UserInformation: React.FC<PropsWithChildren<UserInformationProps>> = (
   props
 ) => {
+  // <AvatarStyled src={props.picture}>{props.name[0]}</AvatarStyled>
   return (
     <UserInformationContainer sx={props.sx} isRating={props.isRating}>
-      <AvatarStyled src={props.picture}>{props.name[0]}</AvatarStyled>
+      <AvatarStyled src={props.picture}></AvatarStyled>
       <RatingStyled value={props.rating} readOnly />
       <UserName>{props.name}</UserName>
       <UserDescription>{props.description}</UserDescription>

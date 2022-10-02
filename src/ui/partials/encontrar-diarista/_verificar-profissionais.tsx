@@ -1,4 +1,5 @@
-import { Button, Container, Typography } from '@mui/material';
+import { Button, CircularProgress, Container, Typography } from '@mui/material';
+import useVerificarProfissionais from 'data/hooks/pages/useVerificarProfissionais.page';
 import React, { PropsWithChildren } from 'react';
 import PageTitle from 'ui/components/data-display/PageTitle/PageTitle';
 import UserInformation from 'ui/components/data-display/UserInformation/UserInformation';
@@ -12,6 +13,18 @@ import {
 } from './_verificar-profissionais.styled';
 
 const VerificarProfissionais: React.FC<PropsWithChildren> = () => {
+  const {
+    cep,
+    setCep,
+    cepValido,
+    buscarProfissionais,
+    erro,
+    diaristas,
+    buscaFeita,
+    carregando,
+    diaristasRestantes,
+  } = useVerificarProfissionais();
+
   return (
     <>
       <SafeEnvironment />
@@ -27,50 +40,64 @@ const VerificarProfissionais: React.FC<PropsWithChildren> = () => {
             mask={'99.999-999'}
             label={'Digite seu CEP'}
             fullWidth
+            value={cep}
+            onChange={(event) => setCep(event.target.value)}
           />
-          <Typography color={'error'}>CEP não encontrado!</Typography>
+          <Typography color={'error'}>{erro}</Typography>
           <Button
             variant={'contained'}
             color={'secondary'}
             sx={{ width: '220px' }}
+            disabled={!cepValido || carregando}
+            onClick={() => buscarProfissionais(cep)}
           >
-            Buscar
+            {carregando ? <CircularProgress size={20} /> : 'Buscar'}
           </Button>
         </FormElementsContainer>
-        <ProfissionalPaper>
-          <ProfissionalContainer>
-            <UserInformation
-              name={'Urubatan Pacheco'}
-              picture={'https://github.com/urubatan-pacheco.png'}
-              rating={3}
-              description={'Campinas-SP'}
-            />
-            <UserInformation
-              name={'Urubatan Pacheco'}
-              picture={'https://github.com/urubatan-pacheco.png'}
-              rating={3}
-              description={'Campinas-SP'}
-            />
-            <UserInformation
-              name={'Urubatan Pacheco'}
-              picture={'https://github.com/urubatan-pacheco.png'}
-              rating={3}
-              description={'Campinas-SP'}
-            />
-          </ProfissionalContainer>
-          <Container sx={{ textAlign: 'center' }}>
-            <Typography
-              variant={'body2'}
-              color={'textSecondary'}
-              sx={{ mt: 5 }}
-            >
-              ...e mais 50 profissionais atendem ao seu endereço.
+        {buscaFeita &&
+          (diaristas.length > 0 ? (
+            <ProfissionalPaper>
+              <ProfissionalContainer>
+                {diaristas.map((diarista, index) => (
+                  <UserInformation
+                    key={index}
+                    name={diarista.nome_completo}
+                    picture={diarista.url_foto_usuario || ''}
+                    rating={diarista.reputacao || 0}
+                    description={diarista.cidade}
+                  />
+                ))}
+              </ProfissionalContainer>
+              <Container sx={{ textAlign: 'center' }}>
+                {diaristasRestantes > 0 ? (
+                  <Typography
+                    variant={'body2'}
+                    color={'textSecondary'}
+                    sx={{ mt: 5 }}
+                  >
+                    ...e mais {diaristasRestantes}{' '}
+                    {diaristasRestantes > 1
+                      ? 'profissionais atendem'
+                      : 'profissional atende'}{' '}
+                    ao seu endereço.
+                  </Typography>
+                ) : (
+                  <></>
+                )}
+                <Button
+                  variant={'contained'}
+                  color={'secondary'}
+                  sx={{ mt: 5 }}
+                >
+                  Contratar um(a) profissional
+                </Button>
+              </Container>
+            </ProfissionalPaper>
+          ) : (
+            <Typography align={'center'} color={'textPrimary'}>
+              Ainda não temos nenhum(a) diarista disponível em sua região
             </Typography>
-            <Button variant={'contained'} color={'secondary'} sx={{ mt: 5 }}>
-              Contratar um(a) profissional
-            </Button>
-          </Container>
-        </ProfissionalPaper>
+          ))}
       </Container>
     </>
   );
