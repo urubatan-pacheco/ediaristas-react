@@ -28,15 +28,17 @@ export const BreadcrumbContainer = styled('ul')`
 export const BreadcrumbItem = styled('li', {
     shouldForwardProp: (prop) => prop != 'isSelected',
 })<{ isSelected?: boolean }>`
-    ${({ theme }) => theme.breakpoints.down('sm')} {
-        padding: ${({ theme }) => theme.spacing()};
-    }
     ${({ theme }) => theme.breakpoints.down('md')} {
         flex: auto;
         padding: ${({ theme }) => theme.spacing() + ' ' + theme.spacing(3)};
         background-color: ${({ theme, isSelected }) =>
             theme.palette.grey[isSelected ? 200 : 100]};
     }
+
+    ${({ theme }) => theme.breakpoints.down('sm')} {
+        padding: ${({ theme }) => theme.spacing()};
+    }
+
     ${({ theme }) => theme.breakpoints.up('md')} {
         counter-increment: breadcrumb-counter;
         font-weight: ${({ isSelected }) => (isSelected ? 'bold' : 'normal')};
