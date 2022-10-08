@@ -12,7 +12,7 @@ export const SideInformationContainer = styled('aside')`
         margin: 0;
     }
     ul {
-        list-style: none;
+        list-style-type: none;
         margin: 0;
         padding: 0;
     }
@@ -50,14 +50,10 @@ export const InformationListItem = styled('li')`
         content: '';
         position: absolute;
         background-color: ${({ theme }) => theme.palette.grey[200]};
-        height: 1.1px;
+        height: 1px;
         left: ${({ theme }) => theme.spacing(3)};
         right: ${({ theme }) => theme.spacing(3)};
         bottom: 0;
-    }
-
-    &:first-of-type::after {
-        height: 1px;
     }
 
     h4 {
