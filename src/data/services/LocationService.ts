@@ -1,4 +1,6 @@
+import { isUndefined } from 'cypress/types/lodash';
 import {
+    CepResponse,
     CidadeInterface,
     EstadoInterface,
 } from 'data/@types/EnderecoInterface';
@@ -50,6 +52,14 @@ export const LocationService = {
                 cidade: cidade.nome,
                 codigo_ibge: cidade.id,
             }));
+        } catch (error) {}
+    },
+    async cep(cep: string): Promise<CepResponse | undefined> {
+        try {
+            const response = await ApiService.request<CepResponse>({
+                url: 'api/enderecos?cep' + cep.replace(/\D/g, ''),
+            });
+            return response.data;
         } catch (error) {}
     },
 };
