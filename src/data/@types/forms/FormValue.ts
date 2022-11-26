@@ -1,3 +1,5 @@
+import { time } from 'console';
+
 export type FormValues = {
     usuario: {
         email: string;
@@ -28,5 +30,19 @@ export type FormValues = {
         numero: string;
         complemento: string;
         codigo_ibge: number;
+    };
+
+    faxina: {
+        servico: number;
+        data_atendimento: string;
+        hora_inicio: string;
+        hora_termino: string;
+        observacoes: string;
+        quantidade_banheiro: number;
+        quantidade_cozinha: number;
+        quantidade_outros: number;
+        quantidade_quarto: number;
+        quantidade_quintal: number;
+        quantidade_sala: number;
     };
 };
