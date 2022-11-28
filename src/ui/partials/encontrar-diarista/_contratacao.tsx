@@ -83,15 +83,15 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
                                         onLoginFormSubmit
                                     )}
                                 >
-                                    loginError && (
-                                    <Typography
-                                        color={'error'}
-                                        align={'center'}
-                                        sx={{ mb: 2 }}
-                                    >
-                                        {loginError}
-                                    </Typography>
-                                    )
+                                    {loginError && (
+                                        <Typography
+                                            color={'error'}
+                                            align={'center'}
+                                            sx={{ mb: 2 }}
+                                        >
+                                            {loginError}
+                                        </Typography>
+                                    )}
                                     <LoginCliente onBack={() => setStep(1)} />
                                 </form>
                             </FormProvider>
