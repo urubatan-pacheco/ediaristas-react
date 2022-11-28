@@ -1,4 +1,4 @@
-import { Button, Paper } from '@mui/material';
+import { Button, Paper, Typography } from '@mui/material';
 import useContratacao from 'data/hooks/pages/useContratacao.page';
 import useIsMobile from 'data/hooks/useIsMobile';
 import React, { PropsWithChildren } from 'react';
@@ -10,8 +10,7 @@ import { PageFormContainer } from 'ui/components/inputs/UserForms/UserForms.styl
 import Breadcrumb from 'ui/components/navigation/Breadcrumb/Breadcrumb';
 import { FormProvider } from 'react-hook-form';
 import DetalhesServico from './_detalhes-servico';
-import CadastroCliente from './_cadastro-cliente';
-import { sanitizeStoryContextUpdate } from '@storybook/store';
+import CadastroCliente, { LoginCliente } from './_cadastro-cliente';
 
 // import { Component } from './_contratacao.styled';
 
@@ -23,11 +22,14 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
             breadCrumbItems,
             serviceForm,
             clientForm,
+            loginForm,
             onServiceFormSubmit,
             onClientFormSubmit,
+            onLoginFormSubmit,
             servicos,
             hasLogin,
             setHasLogin,
+            loginError,
         } = useContratacao();
     return (
         <div>
@@ -74,6 +76,26 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
                                 <DetalhesServico servicos={servicos} />
                             </form>
                         </FormProvider>
+                        {step === 2 && hasLogin && (
+                            <FormProvider {...loginForm}>
+                                <form
+                                    onSubmit={loginForm.handleSubmit(
+                                        onLoginFormSubmit
+                                    )}
+                                >
+                                    loginError && (
+                                    <Typography
+                                        color={'error'}
+                                        align={'center'}
+                                        sx={{ mb: 2 }}
+                                    >
+                                        {loginError}
+                                    </Typography>
+                                    )
+                                    <LoginCliente onBack={() => setStep(1)} />
+                                </form>
+                            </FormProvider>
+                        )}
                         <FormProvider {...clientForm}>
                             <form
                                 onSubmit={clientForm.handleSubmit(

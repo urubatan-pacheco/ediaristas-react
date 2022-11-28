@@ -42,8 +42,23 @@ export const BaseGrid = styled('div')`
     }
 `;
 
+export const UsertData = styled(BaseGrid)`
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+        'nome nome nome'
+        'data-nascimento cpf telefone';
+
+    ${({ theme }) => theme.breakpoints.down('md')} {
+        grid-template-areas:
+            'nome'
+            'data-nascimento'
+            'cpf'
+            'telefone';
+    }
+`;
+
 export const NewContactData = styled(BaseGrid)`
-    grid-template-columns: repeat() (2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-template-areas:
         'email email'
         'senha password-strength'
@@ -58,28 +73,8 @@ export const NewContactData = styled(BaseGrid)`
     }
 `;
 
-export const PictureSelection = styled(BaseGrid)`
-    grid-template-columns: 1fr;
-    padding: 0;
-`;
-
-export const UsertData = styled(BaseGrid)`
-    grid-template-columns: repeat() (2, 1fr);
-    grid-template-areas:
-        'nome nome nome'
-        'data-nascimento cpf telefone';
-
-    ${({ theme }) => theme.breakpoints.down('md')} {
-        grid-template-areas:
-            'nome'
-            'data-nascimento'
-            'cpf'
-            'telefone';
-    }
-`;
-
 export const PaymentData = styled(BaseGrid)`
-    grid-template-columns: repeat() (2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-template-areas:
         'numero numero'
         'nome nome'
@@ -97,12 +92,28 @@ export const PaymentData = styled(BaseGrid)`
 `;
 
 export const AddressData = styled(BaseGrid)`
-    grid-template-columns: repeat() (7, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     grid-template-areas:
         'cep cep estado estado cidade cidade cidade'
         'bairro bairro logradouro logradouro numero complemento complemento';
 
     ${({ theme }) => theme.breakpoints.down('md')} {
         grid-template-areas: 'cep' 'estado' 'cidade' 'bairro' 'logradouro' 'numero' 'complenento';
+    }
+`;
+
+export const PictureSelection = styled(BaseGrid)`
+    grid-template-columns: 1fr;
+    padding: 0;
+`;
+
+export const LoginData = styled(BaseGrid)`
+    ${({ theme }) => theme.breakpoints.down('md')} {
+        text-align: right;
+    }
+
+    a {
+        text-decoration: underline;
+        color: ${({ theme }) => theme.palette.text.secondary};
     }
 `;

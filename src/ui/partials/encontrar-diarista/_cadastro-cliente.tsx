@@ -1,10 +1,12 @@
 import { Button, Container, Divider, Typography } from '@mui/material';
 import React, { PropsWithChildren } from 'react';
 import {
+    LoginForm,
     NewContactForm,
     PictureForm,
     UserDataForm,
 } from 'ui/components/inputs/UserForms/UserForms';
+import { LoginButtonsContainer } from './_cadastro-cliente.styled';
 
 // import { Component } from './_cadastro-cliente.styled';
 
@@ -32,6 +34,8 @@ const CadastroCliente: React.FC<CadastroClienteProps> = ({ onBack }) => {
                 Dados de acesso
             </Typography>
             <NewContactForm />
+            <Divider sx={{ mb: 5 }} />
+
             <Container
                 sx={{ display: 'flex', justifyContent: 'space-between' }}
             >
@@ -51,6 +55,31 @@ const CadastroCliente: React.FC<CadastroClienteProps> = ({ onBack }) => {
                     Ir para pagamento
                 </Button>
             </Container>
+        </>
+    );
+};
+
+export const LoginCliente: React.FC<CadastroClienteProps> = ({ onBack }) => {
+    return (
+        <>
+            <LoginForm />
+            <LoginButtonsContainer>
+                <Button
+                    variant={'outlined'}
+                    color={'primary'}
+                    type={'button'}
+                    onClick={onBack}
+                >
+                    Voltar para detalhes da diária
+                </Button>
+                <Button
+                    variant={'contained'}
+                    color={'secondary'}
+                    type={'submit'}
+                >
+                    Ir para pagamento
+                </Button>
+            </LoginButtonsContainer>
         </>
     );
 };

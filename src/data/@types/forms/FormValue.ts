@@ -33,16 +33,22 @@ export type FormValues = {
     };
 
     faxina: {
-        servico: number;
         data_atendimento: string;
         hora_inicio: string;
         hora_termino: string;
         observacoes: string;
+        servico: number;
         quantidade_banheiro: number;
         quantidade_cozinha: number;
         quantidade_outros: number;
         quantidade_quarto: number;
         quantidade_quintal: number;
         quantidade_sala: number;
+    };
+
+    login: {
+        email: string;
+        password: string;
+        password_confirmation: string;
     };
 };

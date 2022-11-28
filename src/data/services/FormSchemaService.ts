@@ -8,34 +8,55 @@ export const FormSchemaService = {
         return yup
             .object()
             .shape({
-                usuario: yup
-                    .object()
-                    .shape({
-                        nome: yup.string().min(3, 'Digite seu nome completo'),
-                        nascimento: yup
-                            .date()
-                            .transform(DateService.transformDate)
-                            .min(
-                                DateService.maxAdultBirthDay(),
-                                'Digite uma data válida'
-                            )
-                            .max(
-                                DateService.minAdultBirthDay(),
-                                'Proibido menores de idade'
-                            )
-                            .typeError('Digite uma data válida'),
-                        cpf: yup
-                            .string()
-                            .test('cpf', 'CPF inválido', ValidationService.cpf),
-                        telefone: yup
-                            .string()
-                            .test(
-                                'telefone',
-                                'Telefone inválido',
-                                ValidationService.telefone
-                            ),
-                    })
-                    .defined(),
+                usuario: yup.object().shape({
+                    nome: yup.string().min(3, 'Digite seu nome completo'),
+                    nascimento: yup
+                        .date()
+                        .transform(DateService.transformDate)
+                        .min(
+                            DateService.maxAdultBirthDay(),
+                            'Digite uma data válida'
+                        )
+                        .max(
+                            DateService.minAdultBirthDay(),
+                            'Proibido menores de idade'
+                        )
+                        .typeError('Digite uma data válida'),
+                    cpf: yup
+                        .string()
+                        .test('cpf', 'CPF inválido', ValidationService.cpf),
+                    telefone: yup
+                        .string()
+                        .test(
+                            'telefone',
+                            'Telefone inválido',
+                            ValidationService.telefone
+                        ),
+                }),
+            })
+            .defined();
+    },
+    address() {
+        return yup
+            .object()
+            .shape({
+                endereco: yup.object().shape({
+                    cep: yup
+                        .string()
+                        .test('cep', 'CEP inválido', (value) =>
+                            ValidationService.cep(value)
+                        ),
+                    estado: yup.string(),
+                    cidade: yup.string(),
+                    bairro: yup.string(),
+                    logradouro: yup.string(),
+                    numero: yup.string(),
+                    complemento: yup
+                        .string()
+                        .nullable()
+                        .default(undefined)
+                        .notRequired(),
+                }),
             })
             .defined();
     },
@@ -80,7 +101,7 @@ export const FormSchemaService = {
                     validade: yup
                         .string()
                         .test(
-                            'card_number',
+                            'card_expiration_date',
                             'Data de validade inválida',
                             (value) => {
                                 return PaymentService.validade({
@@ -105,30 +126,6 @@ export const FormSchemaService = {
                                 }).card_cvv;
                             }
                         ),
-                }),
-            })
-            .defined();
-    },
-    address() {
-        return yup
-            .object()
-            .shape({
-                endereco: yup.object().shape({
-                    cep: yup
-                        .string()
-                        .test('cep', 'CEP inválido', (value) =>
-                            ValidationService.cep(value)
-                        ),
-                    estado: yup.string(),
-                    cidade: yup.string(),
-                    bairro: yup.string(),
-                    logradouro: yup.string(),
-                    numero: yup.string(),
-                    complemento: yup
-                        .string()
-                        .nullable()
-                        .default(undefined)
-                        .notRequired(),
                 }),
             })
             .defined();
@@ -200,5 +197,13 @@ export const FormSchemaService = {
                     ),
             })
             .defined();
+    },
+    login() {
+        return yup.object().shape({
+            login: yup.object().shape({
+                email: yup.string().email('Email inválido!'),
+                password: yup.string().min(5, 'Senha muito curta!'),
+            }),
+        });
     },
 };
