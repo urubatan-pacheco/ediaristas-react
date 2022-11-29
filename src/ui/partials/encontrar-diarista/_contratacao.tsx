@@ -1,4 +1,4 @@
-import { Button, Paper, Typography } from '@mui/material';
+import { Box, Button, Paper, Typography } from '@mui/material';
 import useContratacao from 'data/hooks/pages/useContratacao.page';
 import useIsMobile from 'data/hooks/useIsMobile';
 import React, { PropsWithChildren } from 'react';
@@ -12,6 +12,7 @@ import { FormProvider } from 'react-hook-form';
 import DetalhesServico from './_detalhes-servico';
 import CadastroCliente, { LoginCliente } from './_cadastro-cliente';
 import InformacoesPagamento from './_informacoes-pagamento';
+import Link from 'ui/components/navigation/Link/Link';
 
 // import { Component } from './_contratacao.styled';
 
@@ -120,31 +121,77 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
                                 </form>
                             </FormProvider>
                         )}
+                        {step === 4 && (
+                            <Box sx={{ textAlign: 'center' }}>
+                                <Typography
+                                    color={'secondary'}
+                                    sx={{ fontSize: '82px' }}
+                                >
+                                    <i className={'twf-check-circle'} />
+                                </Typography>
+                                <Typography
+                                    color={'secondary'}
+                                    sx={{ fontSize: '22px', pb: 3 }}
+                                >
+                                    Pagamento realizado com sucesso!
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        maxWidth: '410px',
+                                        mb: 3,
+                                        mx: 'auto',
+                                    }}
+                                    variant={'body2'}
+                                    color={'textSecondary'}
+                                >
+                                    Sua diária foi paga com sucesso! Já estamos
+                                    procurando o(a) melhor profissional para
+                                    atender sua residência. Caso nenhum(a)
+                                    profissional seja encontrado(a), devolvemos
+                                    seu dinheiro automaticamente 24 horas antes
+                                    da data agendada. Você também pode cancelar
+                                    a sua diária sem nenhuma multa até 24 horas
+                                    antes da hora do agendamento.
+                                </Typography>
+                                <Link
+                                    href={'/diarias'}
+                                    Component={Button}
+                                    mui={{
+                                        color: 'secondary',
+                                        variant: 'contained',
+                                    }}
+                                >
+                                    Ir para minhas diárias
+                                </Link>
+                            </Box>
+                        )}
                     </Paper>
-                    <SideInformation
-                        title={'Detalhes'}
-                        items={[
-                            {
-                                title: 'Tipo',
-                                description: [''],
-                                icon: 'twf-check-circle',
-                            },
-                            {
-                                title: 'Tamanho',
-                                description: [''],
-                                icon: 'twf-check-circle',
-                            },
-                            {
-                                title: 'Data',
-                                description: [''],
-                                icon: 'twf-check-circle',
-                            },
-                        ]}
-                        footer={{
-                            text: 'R$80,00',
-                            icon: 'twf-credit-card',
-                        }}
-                    />
+                    {!isMobile && step !== 4 && (
+                        <SideInformation
+                            title={'Detalhes'}
+                            items={[
+                                {
+                                    title: 'Tipo',
+                                    description: [''],
+                                    icon: 'twf-check-circle',
+                                },
+                                {
+                                    title: 'Tamanho',
+                                    description: [''],
+                                    icon: 'twf-check-circle',
+                                },
+                                {
+                                    title: 'Data',
+                                    description: [''],
+                                    icon: 'twf-check-circle',
+                                },
+                            ]}
+                            footer={{
+                                text: 'R$80,00',
+                                icon: 'twf-credit-card',
+                            }}
+                        />
+                    )}
                 </PageFormContainer>
             </UserFormContainer>
         </div>
