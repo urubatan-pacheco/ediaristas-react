@@ -98,7 +98,14 @@ export const AddressData = styled(BaseGrid)`
         'bairro bairro logradouro logradouro numero complemento complemento';
 
     ${({ theme }) => theme.breakpoints.down('md')} {
-        grid-template-areas: 'cep' 'estado' 'cidade' 'bairro' 'logradouro' 'numero' 'complenento';
+        grid-template-areas:
+            'cep'
+            'estado'
+            'cidade'
+            'bairro'
+            'logradouro'
+            'numero'
+            'complemento';
     }
 `;
 
