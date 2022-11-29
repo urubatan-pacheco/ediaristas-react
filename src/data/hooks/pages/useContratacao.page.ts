@@ -6,11 +6,12 @@ import {
     CadastroClienteFormDataInterface,
     LoginFormDataInterface,
     NovaDiariaFormDataInterface,
+    PagamentoFormDataInterface,
 } from 'data/@types/FormInterface';
 import { ServicoInterface } from 'data/@types/ServicoInterface';
 
 export default function useContratacao() {
-    const [step, setStep] = useState(2),
+    const [step, setStep] = useState(3),
         [hasLogin, setHasLogin] = useState(false),
         [loginError, setLoginError] = useState(''),
         breadCrumbItems = ['Detalhes da diária', 'Identificação', 'Pagamento'],
@@ -27,6 +28,9 @@ export default function useContratacao() {
                     FormSchemaService.newContact()
                 )
             ),
+        }),
+        paymentForm = useForm<PagamentoFormDataInterface>({
+            resolver: yupResolver(FormSchemaService.payment()),
         }),
         loginForm = useForm<LoginFormDataInterface>({
             resolver: yupResolver(FormSchemaService.login()),
@@ -109,15 +113,21 @@ export default function useContratacao() {
         console.log(data);
     }
 
+    function onPaymentFormSubmit(data: PagamentoFormDataInterface) {
+        console.log(data);
+    }
+
     return {
         step,
         setStep,
         breadCrumbItems,
         serviceForm,
         clientForm,
+        paymentForm,
         loginForm,
         onServiceFormSubmit,
         onClientFormSubmit,
+        onPaymentFormSubmit,
         onLoginFormSubmit,
         servicos,
         hasLogin,

@@ -11,6 +11,7 @@ import Breadcrumb from 'ui/components/navigation/Breadcrumb/Breadcrumb';
 import { FormProvider } from 'react-hook-form';
 import DetalhesServico from './_detalhes-servico';
 import CadastroCliente, { LoginCliente } from './_cadastro-cliente';
+import InformacoesPagamento from './_informacoes-pagamento';
 
 // import { Component } from './_contratacao.styled';
 
@@ -22,10 +23,12 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
             breadCrumbItems,
             serviceForm,
             clientForm,
+            paymentForm,
             loginForm,
             onServiceFormSubmit,
             onClientFormSubmit,
             onLoginFormSubmit,
+            onPaymentFormSubmit,
             servicos,
             hasLogin,
             setHasLogin,
@@ -106,6 +109,17 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
                                 <CadastroCliente onBack={() => setStep(1)} />
                             </form>
                         </FormProvider>
+                        {step === 3 && (
+                            <FormProvider {...paymentForm}>
+                                <form
+                                    onSubmit={paymentForm.handleSubmit(
+                                        onPaymentFormSubmit
+                                    )}
+                                >
+                                    <InformacoesPagamento />
+                                </form>
+                            </FormProvider>
+                        )}
                     </Paper>
                     <SideInformation
                         title={'Detalhes'}
