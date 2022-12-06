@@ -8,19 +8,19 @@ export const initialState = {
 };
 
 export type InitialStateType = typeof initialState;
-export type ExternalServiceActionType = {
+export type ExternalServicesActionType = {
     type: string;
     payload?: unknown;
 };
 
 export interface ExternalServicesReducerInterface {
     externalServicesState: InitialStateType;
-    externalServicesDispatch: React.Dispatch<ExternalServiceActionType>;
+    externalServicesDispatch: React.Dispatch<ExternalServicesActionType>;
 }
 
 const reducer = (
     state: InitialStateType,
-    action: ExternalServiceActionType
+    action: ExternalServicesActionType
 ): InitialStateType => {
     const nextState = produce(state, (draftState) => {
         switch (action.type) {
