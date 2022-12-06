@@ -1,12 +1,14 @@
 import { CepResponse } from 'data/@types/EnderecoInterface';
 import { FormValues } from 'data/@types/forms/FormValue';
+import { UserContext } from 'data/contexts/UserContext';
 import useCities from 'data/hooks/useCities.hook';
 import { LocationService } from 'data/services/LocationService';
-import { useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 export default function useAddressForm() {
-    const {
+    const { userAddress, user } = useContext(UserContext).userState,
+        {
             register,
             control,
             watch,
@@ -68,6 +70,8 @@ export default function useAddressForm() {
     }, [addressCep]);
 
     return {
+        userAddress,
+        user,
         control,
         errors,
         estados,
