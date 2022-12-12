@@ -25,7 +25,7 @@ export const AccordionStyled = styled(Accordion)`
     }
 
     .MuiAccordionDetails-root,
-    .MuiTypography-root {
+    .MuiAccordionDetails-root .MuiTypography-root {
         color: ${({ theme }) => theme.palette.primary.contrastText};
         font-size: ${({ theme }) => theme.typography.body2.fontSize};
     }
