@@ -20,6 +20,8 @@ import CadastroCliente, { LoginCliente } from './_cadastro-cliente';
 import InformacoesPagamento from './_informacoes-pagamento';
 import Link from 'ui/components/navigation/Link/Link';
 import { Container } from '@mui/system';
+import { TextFormnatService } from 'data/services/TextFormatService';
+import DataList from 'ui/components/data-display/DataList/DataList';
 
 // import { Component } from './_contratacao.styled';
 
@@ -39,9 +41,13 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
             onPaymentFormSubmit,
             servicos,
             hasLogin,
+            tamanhoCasa,
+            tipoLimpeza,
+            totalPrice,
             setHasLogin,
             loginError,
-        } = useContratacao();
+        } = useContratacao(),
+        dataAtendimento = serviceForm.watch('faxina.data_atendimento');
 
     if (!servicos || servicos.length < 1) {
         return (
@@ -58,8 +64,31 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
                 selected={breadCrumbItems[step - 1]}
                 items={breadCrumbItems}
             />
+            {isMobile && [2, 3].includes(step) && (
+                //
+                <DataList
+                    header={
+                        <Typography
+                            color={'primary'}
+                            sx={{ fontWeight: 'thin' }}
+                        >
+                            O valor total do serviço é:{' '}
+                            {TextFormnatService.currency(totalPrice)}
+                        </Typography>
+                    }
+                    body={
+                        <>
+                            {tipoLimpeza?.nome}
+                            <br />
+                            Tamanho: {tamanhoCasa.join(', ')}
+                            <br />
+                            Data: {dataAtendimento}
+                        </>
+                    }
+                />
+            )}
             {step === 1 && (
-                <PageTitle title={'Nos conte um pouco sobre o serviço|'} />
+                <PageTitle title={'Nos conte um pouco sobre o serviço'} />
             )}
             {step === 2 && (
                 <PageTitle
@@ -188,22 +217,22 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
                             items={[
                                 {
                                     title: 'Tipo',
-                                    description: [''],
+                                    description: [tipoLimpeza?.nome],
                                     icon: 'twf-check-circle',
                                 },
                                 {
                                     title: 'Tamanho',
-                                    description: [''],
+                                    description: tamanhoCasa,
                                     icon: 'twf-check-circle',
                                 },
                                 {
                                     title: 'Data',
-                                    description: [''],
+                                    description: [dataAtendimento as string],
                                     icon: 'twf-check-circle',
                                 },
                             ]}
                             footer={{
-                                text: 'R$80,00',
+                                text: TextFormnatService.currency(totalPrice),
                                 icon: 'twf-credit-card',
                             }}
                         />

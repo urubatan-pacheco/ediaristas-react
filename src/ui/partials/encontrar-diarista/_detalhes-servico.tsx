@@ -27,9 +27,19 @@ export const houseParts = [
         name: 'quantidade_cozinhas',
     },
     {
+        singular: 'Sala',
+        plural: 'Salas',
+        name: 'quantidade_salas',
+    },
+    {
         singular: 'Banheiro',
         plural: 'Banheiros',
         name: 'quantidade_banheiros',
+    },
+    {
+        singular: 'Quarto',
+        plural: 'Quartos',
+        name: 'quantidade_quartos',
     },
     {
         singular: 'Quintal',
@@ -40,16 +50,6 @@ export const houseParts = [
         singular: 'Outro',
         plural: 'Outros',
         name: 'quantidade_outros',
-    },
-    {
-        singular: 'Sala',
-        plural: 'Salas',
-        name: 'quantidade_salas',
-    },
-    {
-        singular: 'Quarto',
-        plural: 'Quartos',
-        name: 'quantidade_quartos',
     },
 ];
 

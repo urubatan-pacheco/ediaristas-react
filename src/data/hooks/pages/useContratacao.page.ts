@@ -14,6 +14,7 @@ import { DiariaInterface } from 'data/@types/DiariaInterface';
 import { ValidationService } from 'data/services/ValidationService';
 import { DateService } from 'data/services/DateService';
 import { getSystemErrorMap } from 'util';
+import { houseParts } from '@partials/encontrar-diarista/_detalhes-servico';
 
 export default function useContratacao() {
     const [step, setStep] = useState(1),
@@ -54,21 +55,30 @@ export default function useContratacao() {
 
             return {} as ServicoInterface;
         }, [dadosFaxina?.servico, servicos]),
-        totalTime = useMemo<number>(() => {
-            return calcularTempoServico(
-                {
-                    quantidade_banheiros: dadosFaxina?.quantidade_banheiros,
-                    quantidade_cozinhas: dadosFaxina?.quantidade_cozinhas,
-                    quantidade_outros: dadosFaxina?.quantidade_outros,
-                    quantidade_quartos: dadosFaxina?.quantidade_quartos,
-                    quantidade_quintais: dadosFaxina?.quantidade_quintais,
-                    quantidade_salas: dadosFaxina?.quantidade_salas,
-                } as DiariaInterface,
-                tipoLimpeza
-            );
+        { tamanhoCasa, totalPrice, totalTime } = useMemo<{
+            tamanhoCasa: string[];
+            totalPrice: number;
+            totalTime: number;
+        }>(() => {
+            return {
+                tamanhoCasa: listarComodos(dadosFaxina),
+                totalPrice: calcularPreco(dadosFaxina, tipoLimpeza),
+                totalTime: calcularTempoServico(
+                    {
+                        quantidade_banheiros: dadosFaxina?.quantidade_banheiros,
+                        quantidade_cozinhas: dadosFaxina?.quantidade_cozinhas,
+                        quantidade_outros: dadosFaxina?.quantidade_outros,
+                        quantidade_quartos: dadosFaxina?.quantidade_quartos,
+                        quantidade_quintais: dadosFaxina?.quantidade_quintais,
+                        quantidade_salas: dadosFaxina?.quantidade_salas,
+                    } as DiariaInterface,
+                    tipoLimpeza
+                ),
+            };
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [
             tipoLimpeza,
+            dadosFaxina,
             dadosFaxina?.quantidade_banheiros,
             dadosFaxina?.quantidade_cozinhas,
             dadosFaxina?.quantidade_outros,
@@ -113,6 +123,24 @@ export default function useContratacao() {
         console.log(data);
     }
 
+    function listarComodos(dadosFaxina: DiariaInterface): string[] {
+        const comodos: string[] = [];
+        if (dadosFaxina) {
+            houseParts.forEach((housePart) => {
+                const qnt_comodo = dadosFaxina[
+                    housePart.name as keyof DiariaInterface
+                ] as number;
+                if (qnt_comodo > 0) {
+                    const nome_comodo =
+                        qnt_comodo > 1 ? housePart.plural : housePart.singular;
+                    comodos.push(`${qnt_comodo} ${nome_comodo}`);
+                }
+            });
+        }
+
+        return comodos;
+    }
+
     function calcularTempoServico(
         dadosFaxina: DiariaInterface,
         tipoLimpeza: ServicoInterface
@@ -133,6 +161,26 @@ export default function useContratacao() {
         return total;
     }
 
+    function calcularPreco(
+        dadosFaxina: DiariaInterface,
+        tipoLimpeza: ServicoInterface
+    ) {
+        let total = 0;
+        if (dadosFaxina && tipoLimpeza) {
+            total +=
+                tipoLimpeza.valor_banheiro * dadosFaxina.quantidade_banheiros;
+            total +=
+                tipoLimpeza.valor_cozinha * dadosFaxina.quantidade_cozinhas;
+            total += tipoLimpeza.valor_outros * dadosFaxina.quantidade_outros;
+            total += tipoLimpeza.valor_quarto * dadosFaxina.quantidade_quartos;
+            total +=
+                tipoLimpeza.valor_quintal * dadosFaxina.quantidade_quintais;
+            total += tipoLimpeza.valor_sala * dadosFaxina.quantidade_salas;
+        }
+
+        return Math.max(total, tipoLimpeza.valor_minimo);
+    }
+
     return {
         step,
         setStep,
@@ -148,6 +196,9 @@ export default function useContratacao() {
         servicos,
         hasLogin,
         loginError,
+        tamanhoCasa,
+        tipoLimpeza,
+        totalPrice,
         setHasLogin,
     };
 }
