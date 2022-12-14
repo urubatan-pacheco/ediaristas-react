@@ -39,6 +39,8 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
             onClientFormSubmit,
             onLoginFormSubmit,
             onPaymentFormSubmit,
+            podemosAtender,
+            setPodemosAtender,
             servicos,
             hasLogin,
             tamanhoCasa,
@@ -122,7 +124,11 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
                                 )}
                                 hidden={step !== 1}
                             >
-                                <DetalhesServico servicos={servicos} />
+                                <DetalhesServico
+                                    servicos={servicos}
+                                    comodos={tamanhoCasa.length}
+                                    podemosAtender={podemosAtender}
+                                />
                             </form>
                         </FormProvider>
                         {step === 2 && hasLogin && (

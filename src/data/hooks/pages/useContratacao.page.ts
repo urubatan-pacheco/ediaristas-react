@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormSchemaService } from 'data/services/FormSchemaService';
@@ -15,6 +15,9 @@ import { ValidationService } from 'data/services/ValidationService';
 import { DateService } from 'data/services/DateService';
 import { getSystemErrorMap } from 'util';
 import { houseParts } from '@partials/encontrar-diarista/_detalhes-servico';
+import { ExternalServicesContext } from 'data/contexts/ExternalServicesContext';
+import { ApiService, linksResolver } from 'data/services/ApiService';
+import { link } from 'fs';
 
 export default function useContratacao() {
     const [step, setStep] = useState(1),
@@ -41,8 +44,11 @@ export default function useContratacao() {
         loginForm = useForm<LoginFormDataInterface>({
             resolver: yupResolver(FormSchemaService.login()),
         }),
+        { externalServicesState } = useContext(ExternalServicesContext),
         servicos = useApi<ServicoInterface[]>('/api/servicos').data,
         dadosFaxina = serviceForm.watch('faxina'),
+        cepFaxina = serviceForm.watch('endereco.cep'),
+        [podemosAtender, setPodemosAtender] = useState(true),
         tipoLimpeza = useMemo<ServicoInterface>(() => {
             if (servicos && dadosFaxina?.servico) {
                 const selectedService = servicos.find(
@@ -106,6 +112,28 @@ export default function useContratacao() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [totalTime, dadosFaxina?.hora_inicio]);
+
+    useEffect(() => {
+        const cep = ((cepFaxina as string) || '').replace(/\D/g, ''); // somente digitos
+        if (ValidationService.cep(cep)) {
+            const linkDisponibilidade = linksResolver(
+                externalServicesState.externalServices,
+                'verificar_disponibilidade_atendimento'
+            );
+            if (linkDisponibilidade) {
+                ApiService.request<{ disponibilidade: boolean }>({
+                    url: linkDisponibilidade.uri + '?cep=' + cep,
+                    method: linkDisponibilidade.type,
+                })
+                    .then((response) => {
+                        setPodemosAtender(response.data.disponibilidade);
+                    })
+                    .catch((_error) => setPodemosAtender(false));
+            }
+        } else {
+            setPodemosAtender(true); // o usuário ainda não terminou de digitar
+        }
+    }, [cepFaxina]);
 
     function onServiceFormSubmit(data: NovaDiariaFormDataInterface) {
         console.log(data);
@@ -194,6 +222,8 @@ export default function useContratacao() {
         onPaymentFormSubmit,
         onLoginFormSubmit,
         servicos,
+        podemosAtender,
+        setPodemosAtender,
         hasLogin,
         loginError,
         tamanhoCasa,
