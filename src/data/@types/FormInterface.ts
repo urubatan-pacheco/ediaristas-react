@@ -6,6 +6,9 @@ export interface NovaDiariaFormDataInterface {
     endereco: EnderecoInterface;
     faxina: DiariaInterface;
 }
+export interface CadastroUserInterface {
+    usuario: UserInterface;
+}
 
 export interface LoginFormDataInterface {
     email: string;
