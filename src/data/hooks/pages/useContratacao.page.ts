@@ -9,15 +9,20 @@ import {
     PagamentoFormDataInterface,
 } from 'data/@types/FormInterface';
 import { ServicoInterface } from 'data/@types/ServicoInterface';
-import useApi from '../useApi.hook';
+import useApi, { useApiHateos } from '../useApi.hook';
 import { DiariaInterface } from 'data/@types/DiariaInterface';
 import { ValidationService } from 'data/services/ValidationService';
 import { DateService } from 'data/services/DateService';
 import { getSystemErrorMap } from 'util';
 import { houseParts } from '@partials/encontrar-diarista/_detalhes-servico';
 import { ExternalServicesContext } from 'data/contexts/ExternalServicesContext';
-import { ApiService, linksResolver } from 'data/services/ApiService';
+import {
+    ApiService,
+    ApiServiceHateoas,
+    linksResolver,
+} from 'data/services/ApiService';
 import { link } from 'fs';
+import { AxiosError } from 'axios';
 
 export default function useContratacao() {
     const [step, setStep] = useState(1),
@@ -45,7 +50,10 @@ export default function useContratacao() {
             resolver: yupResolver(FormSchemaService.login()),
         }),
         { externalServicesState } = useContext(ExternalServicesContext),
-        servicos = useApi<ServicoInterface[]>('/api/servicos').data,
+        servicos = useApiHateos<ServicoInterface[]>(
+            externalServicesState.externalServices,
+            'listar_servicos'
+        ).data,
         dadosFaxina = serviceForm.watch('faxina'),
         cepFaxina = serviceForm.watch('endereco.cep'),
         [podemosAtender, setPodemosAtender] = useState(true),
@@ -116,24 +124,25 @@ export default function useContratacao() {
     useEffect(() => {
         const cep = ((cepFaxina as string) || '').replace(/\D/g, ''); // somente digitos
         if (ValidationService.cep(cep)) {
-            const linkDisponibilidade = linksResolver(
+            ApiServiceHateoas(
                 externalServicesState.externalServices,
-                'verificar_disponibilidade_atendimento'
-            );
-            if (linkDisponibilidade) {
-                ApiService.request<{ disponibilidade: boolean }>({
-                    url: linkDisponibilidade.uri + '?cep=' + cep,
-                    method: linkDisponibilidade.type,
-                })
-                    .then((response) => {
-                        setPodemosAtender(response.data.disponibilidade);
+                'verificar_disponibilidade_atendimento',
+                (request) => {
+                    request<{ disponibilidade: boolean }>({
+                        params: { cep: cep },
                     })
-                    .catch((_error) => setPodemosAtender(false));
-            }
+                        .then(({ data }) => {
+                            setPodemosAtender(data.disponibilidade);
+                        })
+                        .catch((_error: AxiosError) =>
+                            setPodemosAtender(false)
+                        );
+                }
+            );
         } else {
-            setPodemosAtender(true); // o usuário ainda não terminou de digitar
+            setPodemosAtender(false);
         }
-    }, [cepFaxina]);
+    }, [cepFaxina, externalServicesState.externalServices]);
 
     function onServiceFormSubmit(data: NovaDiariaFormDataInterface) {
         console.log(data);
