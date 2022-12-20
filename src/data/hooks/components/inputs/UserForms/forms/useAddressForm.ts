@@ -58,11 +58,7 @@ export default function useAddressForm() {
                         setValue('endereco.logradouro', newAddress.logradouro);
                     newAddress.ibge &&
                         setValue('endereco.codigo_ibge', +newAddress.ibge);
-                    newAddress.complemento &&
-                        setValue(
-                            'endereco.complemento',
-                            newAddress.complemento
-                        );
+                    setValue('endereco.complemento', newAddress.complemento);
                 }
             });
         }
