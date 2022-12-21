@@ -24,8 +24,11 @@ import {
 import { link } from 'fs';
 import { AxiosError } from 'axios';
 import { UserContext } from 'data/contexts/UserContext';
-import { UserInterface } from 'data/@types/UserInterface';
+import { UserInterface, UserType } from 'data/@types/UserInterface';
 import { TextFormnatService } from 'data/services/TextFormatService';
+import { LoginService } from 'data/services/LoginService';
+import { ApiLinksInterface } from 'data/@types/ApiLinksInterface';
+import { UserService } from 'data/services/UserServices';
 
 export default function useContratacao() {
     const [step, setStep] = useState(1),
@@ -157,12 +160,69 @@ export default function useContratacao() {
         }
     }
 
-    function onClientFormSubmit(data: CadastroClienteFormDataInterface) {
-        console.log(data);
+    async function onClientFormSubmit(data: CadastroClienteFormDataInterface) {
+        const newUserLink = linksResolver(
+            externalServicesState.externalServices,
+            'cadastrar_usuario'
+        );
+        if (newUserLink) {
+            try {
+                await cadastrarUsuario(data, newUserLink);
+            } catch (error) {
+                UserService.handleNewUserError(error, clientForm);
+            }
+        }
     }
 
-    function onLoginFormSubmit(data: LoginFormDataInterface) {
-        console.log(data);
+    async function cadastrarUsuario(
+        data: CadastroClienteFormDataInterface,
+        link: ApiLinksInterface
+    ) {
+        const newUser = await UserService.cadastrar(
+            data.usuario,
+            UserType.Cliente,
+            link
+        );
+        if (newUser) {
+            const loginSuccess = await login(
+                {
+                    email: data.usuario.email,
+                    password: data.usuario.password || '',
+                },
+                newUser
+            );
+            if (loginSuccess) {
+                criarDiaria(newUser);
+            }
+        }
+    }
+
+    async function onLoginFormSubmit(data: { login: LoginFormDataInterface }) {
+        const loginSuccess = await login(data.login);
+        if (loginSuccess) {
+            const user = await LoginService.getUser();
+            if (user) {
+                criarDiaria(user);
+                setStep(3);
+            }
+        }
+    }
+
+    async function login(
+        credentials: LoginFormDataInterface,
+        user?: UserInterface
+    ): Promise<boolean> {
+        const loginSuccess = await LoginService.login(credentials);
+        if (loginSuccess) {
+            if (!user) {
+                user = await LoginService.getUser();
+            }
+            userDispatch({ type: 'SET_USER', payload: user });
+        } else {
+            setLoginError('E-mail e/ou senha inválidos!');
+        }
+
+        return loginSuccess;
     }
 
     function onPaymentFormSubmit(data: PagamentoFormDataInterface) {
