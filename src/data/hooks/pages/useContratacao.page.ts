@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormSchemaService } from 'data/services/FormSchemaService';
 import {
     CadastroClienteFormDataInterface,
+    CredenciaisInterface,
     LoginFormDataInterface,
     NovaDiariaFormDataInterface,
     PagamentoFormDataInterface,
@@ -21,7 +22,6 @@ import {
     ApiServiceHateoas,
     linksResolver,
 } from 'data/services/ApiService';
-import { link } from 'fs';
 import { AxiosError } from 'axios';
 import { UserContext } from 'data/contexts/UserContext';
 import { UserInterface, UserType } from 'data/@types/UserInterface';
@@ -29,6 +29,8 @@ import { TextFormnatService } from 'data/services/TextFormatService';
 import { LoginService } from 'data/services/LoginService';
 import { ApiLinksInterface } from 'data/@types/ApiLinksInterface';
 import { UserService } from 'data/services/UserServices';
+import { CardInterface } from 'pagarme';
+import { PaymentService } from '../../services/PaymentService';
 
 export default function useContratacao() {
     const [step, setStep] = useState(1),
@@ -52,7 +54,7 @@ export default function useContratacao() {
         paymentForm = useForm<PagamentoFormDataInterface>({
             resolver: yupResolver(FormSchemaService.payment()),
         }),
-        loginForm = useForm<LoginFormDataInterface>({
+        loginForm = useForm<LoginFormDataInterface<CredenciaisInterface>>({
             resolver: yupResolver(FormSchemaService.login()),
         }),
         { userState, userDispatch } = useContext(UserContext),
@@ -63,7 +65,7 @@ export default function useContratacao() {
         ).data,
         dadosFaxina = serviceForm.watch('faxina'),
         cepFaxina = serviceForm.watch('endereco.cep'),
-        [podemosAtender, setPodemosAtender] = useState(true),
+        [podemosAtender, setPodemosAtender] = useState(false),
         [novaDiaria, setNovaDiaria] = useState({} as DiariaInterface),
         tipoLimpeza = useMemo<ServicoInterface>(() => {
             if (servicos && dadosFaxina?.servico) {
@@ -116,6 +118,21 @@ export default function useContratacao() {
             totalTime >= 0
         ) {
             serviceForm.setValue(
+                'faxina.hora_inicio',
+                dadosFaxina?.hora_inicio,
+                {
+                    shouldValidate: true,
+                }
+            );
+            serviceForm.setValue(
+                'faxina.data_atendimento',
+                dadosFaxina?.data_atendimento,
+                {
+                    shouldValidate: true,
+                }
+            );
+
+            serviceForm.setValue(
                 'faxina.hora_termino',
                 DateService.addHours(
                     dadosFaxina?.hora_inicio as string,
@@ -127,24 +144,27 @@ export default function useContratacao() {
             serviceForm.setValue('faxina.hora_termino', '');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [totalTime, dadosFaxina?.hora_inicio]);
+    }, [
+        totalTime,
+        dadosFaxina?.data_atendimento,
+        dadosFaxina?.hora_inicio,
+        dadosFaxina?.hora_termino,
+    ]);
 
     useEffect(() => {
-        const cep = ((cepFaxina as string) || '').replace(/\D/g, ''); // somente digitos
+        const cep = ((cepFaxina as string) ?? '').replace(/\D/g, ''); // somente digitos
         if (ValidationService.cep(cep)) {
             ApiServiceHateoas(
                 externalServicesState.externalServices,
                 'verificar_disponibilidade_atendimento',
                 (request) => {
                     request<{ disponibilidade: boolean }>({
-                        params: { cep: cep },
+                        params: { cep },
                     })
                         .then(({ data }) => {
                             setPodemosAtender(data.disponibilidade);
                         })
-                        .catch((_error: AxiosError) =>
-                            setPodemosAtender(false)
-                        );
+                        .catch((_error) => setPodemosAtender(false));
                 }
             );
         } else {
@@ -169,6 +189,7 @@ export default function useContratacao() {
             try {
                 await cadastrarUsuario(data, newUserLink);
             } catch (error) {
+                console.log(error);
                 UserService.handleNewUserError(error, clientForm);
             }
         }
@@ -187,7 +208,7 @@ export default function useContratacao() {
             const loginSuccess = await login(
                 {
                     email: data.usuario.email,
-                    password: data.usuario.password || '',
+                    password: data.usuario.password ?? '',
                 },
                 newUser
             );
@@ -197,7 +218,9 @@ export default function useContratacao() {
         }
     }
 
-    async function onLoginFormSubmit(data: { login: LoginFormDataInterface }) {
+    async function onLoginFormSubmit(
+        data: LoginFormDataInterface<CredenciaisInterface>
+    ) {
         const loginSuccess = await login(data.login);
         if (loginSuccess) {
             const user = await LoginService.getUser();
@@ -209,7 +232,7 @@ export default function useContratacao() {
     }
 
     async function login(
-        credentials: LoginFormDataInterface,
+        credentials: CredenciaisInterface,
         user?: UserInterface
     ): Promise<boolean> {
         const loginSuccess = await LoginService.login(credentials);
@@ -225,8 +248,30 @@ export default function useContratacao() {
         return loginSuccess;
     }
 
-    function onPaymentFormSubmit(data: PagamentoFormDataInterface) {
-        console.log(data);
+    async function onPaymentFormSubmit(data: PagamentoFormDataInterface) {
+        const cartao = {
+            card_number: data.pagamento.numero_cartao.replaceAll(' ', ''),
+            card_holder_name: data.pagamento.nome_cartao,
+            card_cvv: data.pagamento.codigo,
+            card_expiration_date: data.pagamento.validade,
+        } as CardInterface;
+        const hash = await PaymentService.getHash(cartao);
+        ApiServiceHateoas(novaDiaria.links, 'pagar_diaria', async (request) => {
+            try {
+                await request({
+                    data: {
+                        card_hash: hash,
+                    },
+                });
+
+                setStep(4);
+            } catch (error) {
+                paymentForm.setError('pagamento_recusado', {
+                    type: 'manual',
+                    message: 'Pagamento recusado!',
+                });
+            }
+        });
     }
 
     function listarComodos(dadosFaxina: DiariaInterface): string[] {
@@ -294,33 +339,33 @@ export default function useContratacao() {
                 user.links,
                 'cadastrar_diaria',
                 async (request) => {
-                    try {
-                        const novaDiaria = (
-                            await request<DiariaInterface>({
-                                data: {
-                                    ...serviceData.endereco,
-                                    ...serviceData.faxina,
-                                    cep: TextFormnatService.getNumbersFromText(
-                                        serviceData.endereco.cep
-                                    ),
-                                    preco: totalPrice,
-                                    data_atendimento:
-                                        TextFormnatService.reverseDate(
-                                            serviceData.faxina
-                                                .data_atendimento as string
-                                        ) +
-                                        'T' +
-                                        serviceData.faxina.hora_inicio,
-                                    tempo_atendimento: totalTime,
-                                },
-                            })
-                        ).data;
+                    //   try {
+                    const novaDiaria = (
+                        await request<DiariaInterface>({
+                            data: {
+                                ...serviceData.endereco,
+                                ...serviceData.faxina,
+                                cep: TextFormnatService.getNumbersFromText(
+                                    serviceData.endereco.cep
+                                ),
+                                preco: totalPrice,
+                                data_atendimento:
+                                    TextFormnatService.reverseDate(
+                                        serviceData.faxina
+                                            .data_atendimento as string
+                                    ) +
+                                    'T' +
+                                    serviceData.faxina.hora_inicio,
+                                tempo_atendimento: totalTime,
+                            },
+                        })
+                    ).data;
 
-                        if (novaDiaria) {
-                            setStep(3);
-                            setNovaDiaria(novaDiaria);
-                        }
-                    } catch (error) {}
+                    if (novaDiaria) {
+                        setStep(3);
+                        setNovaDiaria(novaDiaria);
+                    }
+                    //q    } catch (error) {}
                 }
             );
         }

@@ -7,100 +7,110 @@ import SafeEnvironment from 'ui/components/feedback/SafeEnvironment/SafeEnvironm
 import TextFieldMask from 'ui/components/inputs/TextFieldMask/TextFieldMask';
 
 import {
-  FormElementsContainer,
-  ProfissionalContainer,
-  ProfissionalPaper,
+    FormElementsContainer,
+    ProfissionalContainer,
+    ProfissionalPaper,
 } from './_verificar-profissionais.styled';
 
-const VerificarProfissionais: React.FC<PropsWithChildren> = () => {
-  const {
-    cep,
-    setCep,
-    cepValido,
-    buscarProfissionais,
-    erro,
-    diaristas,
-    buscaFeita,
-    carregando,
-    diaristasRestantes,
-  } = useVerificarProfissionais();
+interface VerificarProfissionaisProps extends PropsWithChildren {
+    onContratarProfissional: () => void;
+}
 
-  return (
-    <>
-      <SafeEnvironment />
-      <PageTitle
-        title={'Conheça os profissionais'}
-        subtitle={
-          'Preencha seu endereço e veja todos os profissionais da sua localidade'
-        }
-      />
-      <Container sx={{ mb: 10 }}>
-        <FormElementsContainer>
-          <TextFieldMask
-            mask={'99.999-999'}
-            label={'Digite seu CEP'}
-            fullWidth
-            value={cep}
-            onChange={(event) => setCep(event.target.value)}
-          />
-          <Typography color={'error'}>{erro}</Typography>
-          <Button
-            variant={'contained'}
-            color={'secondary'}
-            sx={{ width: '220px' }}
-            disabled={!cepValido || carregando}
-            onClick={() => buscarProfissionais(cep)}
-          >
-            {carregando ? <CircularProgress size={20} /> : 'Buscar'}
-          </Button>
-        </FormElementsContainer>
-        {buscaFeita &&
-          (diaristas.length > 0 ? (
-            <ProfissionalPaper>
-              <ProfissionalContainer>
-                {diaristas.map((diarista, index) => (
-                  <UserInformation
-                    key={index}
-                    name={diarista.nome_completo}
-                    picture={diarista.url_foto_usuario || ''}
-                    rating={diarista.reputacao || 0}
-                    description={diarista.cidade}
-                  />
-                ))}
-              </ProfissionalContainer>
-              <Container sx={{ textAlign: 'center' }}>
-                {diaristasRestantes > 0 ? (
-                  <Typography
-                    variant={'body2'}
-                    color={'textSecondary'}
-                    sx={{ mt: 5 }}
-                  >
-                    ...e mais {diaristasRestantes}{' '}
-                    {diaristasRestantes > 1
-                      ? 'profissionais atendem'
-                      : 'profissional atende'}{' '}
-                    ao seu endereço.
-                  </Typography>
-                ) : (
-                  <></>
-                )}
-                <Button
-                  variant={'contained'}
-                  color={'secondary'}
-                  sx={{ mt: 5 }}
-                >
-                  Contratar um(a) profissional
-                </Button>
-              </Container>
-            </ProfissionalPaper>
-          ) : (
-            <Typography align={'center'} color={'textPrimary'}>
-              Ainda não temos nenhum(a) diarista disponível em sua região
-            </Typography>
-          ))}
-      </Container>
-    </>
-  );
+const VerificarProfissionais: React.FC<VerificarProfissionaisProps> = (
+    props
+) => {
+    const {
+        cep,
+        setCep,
+        cepValido,
+        buscarProfissionais,
+        erro,
+        diaristas,
+        buscaFeita,
+        carregando,
+        diaristasRestantes,
+    } = useVerificarProfissionais();
+
+    return (
+        <>
+            <SafeEnvironment />
+            <PageTitle
+                title={'Conheça os profissionais'}
+                subtitle={
+                    'Preencha seu endereço e veja todos os profissionais da sua localidade'
+                }
+            />
+            <Container sx={{ mb: 10 }}>
+                <FormElementsContainer>
+                    <TextFieldMask
+                        mask={'99.999-999'}
+                        label={'Digite seu CEP'}
+                        fullWidth
+                        value={cep}
+                        onChange={(event) => setCep(event.target.value)}
+                    />
+                    <Typography color={'error'}>{erro}</Typography>
+                    <Button
+                        variant={'contained'}
+                        color={'secondary'}
+                        sx={{ width: '220px' }}
+                        disabled={!cepValido || carregando}
+                        onClick={() => buscarProfissionais(cep)}
+                    >
+                        {carregando ? <CircularProgress size={20} /> : 'Buscar'}
+                    </Button>
+                </FormElementsContainer>
+                {buscaFeita &&
+                    (diaristas.length > 0 ? (
+                        <ProfissionalPaper>
+                            <ProfissionalContainer>
+                                {diaristas.map((diarista, index) => (
+                                    <UserInformation
+                                        key={index}
+                                        name={diarista.nome_completo}
+                                        picture={
+                                            diarista.url_foto_usuario || ''
+                                        }
+                                        rating={diarista.reputacao || 0}
+                                        description={diarista.cidade}
+                                    />
+                                ))}
+                            </ProfissionalContainer>
+                            <Container sx={{ textAlign: 'center' }}>
+                                {diaristasRestantes > 0 ? (
+                                    <Typography
+                                        variant={'body2'}
+                                        color={'textSecondary'}
+                                        sx={{ mt: 5 }}
+                                    >
+                                        ...e mais {diaristasRestantes}{' '}
+                                        {diaristasRestantes > 1
+                                            ? 'profissionais atendem'
+                                            : 'profissional atende'}{' '}
+                                        ao seu endereço.
+                                    </Typography>
+                                ) : (
+                                    <></>
+                                )}
+                                <Button
+                                    variant={'contained'}
+                                    color={'secondary'}
+                                    onClick={props.onContratarProfissional}
+                                    sx={{ mt: 5 }}
+                                >
+                                    Contratar um(a) profissional
+                                </Button>
+                            </Container>
+                        </ProfissionalPaper>
+                    ) : (
+                        <Typography align={'center'} color={'textPrimary'}>
+                            Ainda não temos nenhum(a) diarista disponível em sua
+                            região
+                        </Typography>
+                    ))}
+            </Container>
+        </>
+    );
 };
 
 export default VerificarProfissionais;

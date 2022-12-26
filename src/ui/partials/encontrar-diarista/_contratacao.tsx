@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import useContratacao from 'data/hooks/pages/useContratacao.page';
 import useIsMobile from 'data/hooks/useIsMobile';
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import PageTitle from 'ui/components/data-display/PageTitle/PageTitle';
 import SideInformation from 'ui/components/data-display/SideInformation/SideInformation';
 import SafeEnvironment from 'ui/components/feedback/SafeEnvironment/SafeEnvironment';
@@ -22,6 +22,7 @@ import Link from 'ui/components/navigation/Link/Link';
 import { Container } from '@mui/system';
 import { TextFormnatService } from 'data/services/TextFormatService';
 import DataList from 'ui/components/data-display/DataList/DataList';
+import { BrowserService } from 'data/services/BrowserService';
 
 // import { Component } from './_contratacao.styled';
 
@@ -40,7 +41,6 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
             onLoginFormSubmit,
             onPaymentFormSubmit,
             podemosAtender,
-            setPodemosAtender,
             servicos,
             hasLogin,
             tamanhoCasa,
@@ -50,6 +50,10 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
             loginError,
         } = useContratacao(),
         dataAtendimento = serviceForm.watch('faxina.data_atendimento');
+
+    useEffect(() => {
+        BrowserService.scrollToTop();
+    }, [step]);
 
     if (!servicos || servicos.length < 1) {
         return (
@@ -244,6 +248,15 @@ const Contratacao: React.FC<PropsWithChildren> = () => {
                         />
                     )}
                 </PageFormContainer>
+
+                {step === 3 && (
+                    <PageTitle
+                        title={'Informe os dados do cartão para pagamento'}
+                        subtitle={
+                            'Será feita uma reserva, mas o valor só será descontado quando você confirmar a presença do/da diarista'
+                        }
+                    />
+                )}
             </UserFormContainer>
         </div>
     );

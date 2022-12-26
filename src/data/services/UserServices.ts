@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ApiLinksInterface } from 'data/@types/ApiLinksInterface';
 import { CadastroUserInterface } from 'data/@types/FormInterface';
 import { UserInterface, UserType } from 'data/@types/UserInterface';
-import { FieldPath, UseFormReturn } from 'react-hook-form';
+import { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form';
 import { ApiService } from './ApiService';
 import { ObjectService } from './ObjectService';
 import { TextFormnatService } from './TextFormatService';
@@ -39,9 +39,9 @@ export const UserService = {
         });
         return response.data;
     },
-    handleNewUserError(
-        error: unknown,
-        form: UseFormReturn<CadastroUserInterface>
+    handleNewUserError<T extends FieldValues>(
+        error: any,
+        form: UseFormReturn<T>
     ): void {
         if (axios.isAxiosError(error)) {
             const errorList = error?.response?.data as
@@ -49,6 +49,7 @@ export const UserService = {
                 | undefined;
 
             if (errorList) {
+                console.log(errorList);
                 if (errorList.errors.cpf) {
                     form.setError('usuario.cpf' as FieldPath<T>, {
                         type: 'cadastrado',
@@ -58,7 +59,7 @@ export const UserService = {
                 if (errorList.errors.email) {
                     form.setError('usuario.email' as FieldPath<T>, {
                         type: 'cadastrado',
-                        message: 'CPF já cadastrado',
+                        message: 'E-mail já cadastrado',
                     });
                 }
             }

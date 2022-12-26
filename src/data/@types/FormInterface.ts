@@ -10,18 +10,25 @@ export interface CadastroUserInterface {
     usuario: UserInterface;
 }
 
-export interface LoginFormDataInterface {
-    email: string;
-    password: string;
+export interface LoginFormDataInterface<T> {
+    login: T;
 }
 export interface CadastroClienteFormDataInterface {
     usuario: UserInterface;
 }
 
+export interface CredenciaisInterface {
+    email: string;
+    password: string;
+}
+
 export interface PagamentoFormDataInterface {
-    nome_cartao: string;
-    numero_cartao: string;
-    codigo: string;
-    validade: string;
-    pagamento_recusado: boolean;
+    pagamento: {
+        nome_cartao: string;
+        numero_cartao: string;
+        codigo: string;
+        validade: string;
+        pagamento_recusado: boolean;
+    };
+    pagamento_recusado?: boolean;
 }
