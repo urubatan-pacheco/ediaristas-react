@@ -1,7 +1,4 @@
-import {
-    CredenciaisInterface,
-    LoginFormDataInterface,
-} from 'data/@types/FormInterface';
+import { CredenciaisInterface } from 'data/@types/FormInterface';
 import { UserInterface } from 'data/@types/UserInterface';
 import { ApiService } from './ApiService';
 import { LocalStorage } from './StorageService';
