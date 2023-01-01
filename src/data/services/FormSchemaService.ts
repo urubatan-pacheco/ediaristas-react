@@ -84,7 +84,7 @@ export const FormSchemaService = {
             .shape({
                 pagamento: yup.object().shape({
                     nome_cartao: yup.string(),
-                    card_number: yup
+                    numero_cartao: yup
                         .string()
                         .test(
                             'card_number',

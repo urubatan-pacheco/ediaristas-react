@@ -14,7 +14,6 @@ export type FormValues = {
     pagamento: {
         numero_cartao: string;
         nome_cartao: string;
-        card_number: string;
         validade: string;
         codigo: string;
     };

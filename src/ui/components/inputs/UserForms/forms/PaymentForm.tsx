@@ -76,9 +76,9 @@ export const PaymentForm = () => {
             {errors?.pagamento_recusado !== undefined && (
                 <Typography
                     color={'error'}
-                    sx={{ gridArea: 'error', textAlign: 'center' }}
+                    sx={{ gridArea: 'erro', textAlign: 'center' }}
                 >
-                    errors?.pagamento_recusado?.message
+                    {errors?.pagamento_recusado?.message}
                 </Typography>
             )}
         </PaymentData>

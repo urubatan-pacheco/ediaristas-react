@@ -1,4 +1,3 @@
-import { PagarmeClientInterface } from 'data/@types/3rd/pagarme';
 import pagarme, { CardInterface, CardValidateInterface } from 'pagarme';
 
 const encryption_key = process.env.NEXT_PUBLIC_PAGARME_ENCRYPTION_KEY;
@@ -10,8 +9,6 @@ export const PaymentService = {
     getHash(card: CardInterface): Promise<string> {
         return pagarme.client
             .connect({ encryption_key })
-            .then((client: PagarmeClientInterface) =>
-                client.security.encrypt(card)
-            );
+            .then((client) => client.security.encrypt(card));
     },
 };
