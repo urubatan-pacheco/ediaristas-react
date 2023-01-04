@@ -24,10 +24,13 @@ export default function useLogin() {
 
         if (loginSuccess) {
             const user = await LoginService.getUser();
-            userDispatch({ type: 'SET_USER', payload: user });
-        } else {
-            setErrorMessage('E-mail e/o senha inválidos!');
+            if (user) {
+                userDispatch({ type: 'SET_USER', payload: user });
+                return;
+            }
         }
+
+        setErrorMessage('E-mail e/o senha inválidos!');
     }
     return { externalServicesState, formMethods, errorMessage, onSubmit };
 }
