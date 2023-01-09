@@ -48,7 +48,7 @@ const HeaderDesktop: React.FC<HeaderProps> = (props) => {
     return (
         <HeaderAppBar>
             <Toolbar component={Container}>
-                <Link href="/">
+                <Link href={'/'}>
                     <HeaderLogo src="/img/logos/logo.svg" alt="e-diaristas" />
                 </Link>
                 <ButtonsContainer>
@@ -56,25 +56,25 @@ const HeaderDesktop: React.FC<HeaderProps> = (props) => {
                         <>
                             {userType === UserType.Diarista ? (
                                 <Link
-                                    href="/oportunidades"
+                                    href={'/oportunidades'}
                                     Component={RoundedButton}
                                 >
                                     Oportunidades
                                 </Link>
                             ) : (
                                 <Link
-                                    href="/encontrar-diarista"
+                                    href={'/encontrar-diarista'}
                                     Component={RoundedButton}
                                 >
                                     Encontrar diarista
                                 </Link>
                             )}
-                            <Link href="/diarias" Component={RoundedButton}>
+                            <Link href={'/diarias'} Component={RoundedButton}>
                                 Diárias
                             </Link>
                             {userType === UserType.Diarista && (
                                 <Link
-                                    href="/pagamentos"
+                                    href={'/pagamentos'}
                                     Component={RoundedButton}
                                 >
                                     Pagamentos
@@ -91,19 +91,19 @@ const HeaderDesktop: React.FC<HeaderProps> = (props) => {
                         onClick={() => setMenuOpen(true)}
                         onMenuClick={() => setMenuOpen(false)}
                         onMenuClose={() => setMenuOpen(false)}
-                        onLogout={() => {}}
+                        onLogout={props.onLogout}
                     />
                 ) : (
                     <ButtonsContainer>
                         <Link
-                            href="/cadastro/diarista"
+                            href={'/cadastro/diarista'}
                             Component={RoundedButton}
                             mui={{ color: 'primary', variant: 'contained' }}
                         >
                             Seja um(a) diarista
                         </Link>
 
-                        <Link href="/login" Component={RoundedButton}>
+                        <Link href={'/login'} Component={RoundedButton}>
                             Login
                         </Link>
                     </ButtonsContainer>
@@ -141,25 +141,25 @@ const HeaderMobile: React.FC<HeaderProps> = (props) => {
                             <MenuList>
                                 {userType === UserType.Diarista ? (
                                     <Link
-                                        href="/oportunidades"
+                                        href={'/oportunidades'}
                                         Component={MenuItem}
                                     >
                                         Oportunidades
                                     </Link>
                                 ) : (
                                     <Link
-                                        href="/encontrar-diarista"
+                                        href={'/encontrar-diarista'}
                                         Component={MenuItem}
                                     >
                                         Encontrar diarista
                                     </Link>
                                 )}
-                                <Link href="/diarias" Component={MenuItem}>
+                                <Link href={'/diarias'} Component={MenuItem}>
                                     Diárias
                                 </Link>
                                 {userType === UserType.Diarista && (
                                     <Link
-                                        href="/pagamentos"
+                                        href={'/pagamentos'}
                                         Component={MenuItem}
                                     >
                                         Pagamentos
@@ -167,10 +167,17 @@ const HeaderMobile: React.FC<HeaderProps> = (props) => {
                                 )}
                                 <Divider />
                                 <Link
-                                    href="/alterar-dados"
+                                    href={'/alterar-dados'}
                                     Component={MenuItem}
                                 >
                                     Alterar dados
+                                </Link>
+                                <Link
+                                    href={''}
+                                    Component={MenuItem}
+                                    onClick={props.onLogout}
+                                >
+                                    Sair
                                 </Link>
                             </MenuList>
                         </>

@@ -11,6 +11,7 @@ import { MainProvider } from 'data/contexts/MainContext';
 import { UserContext } from 'data/contexts/UserContext';
 import useRouterGuard, { privateRoutes } from 'data/hooks/useRouterGuard.hook';
 import { Container, textAlign } from '@mui/system';
+import { LoginService } from 'data/services/LoginService';
 
 function App({ Component, pageProps }: AppProps) {
     const { userState } = useContext(UserContext);
@@ -26,6 +27,12 @@ function App({ Component, pageProps }: AppProps) {
         }
         return true;
     }
+
+    function onLogout() {
+        LoginService.logout();
+        window.location.reload();
+    }
+
     return (
         <>
             <Head>
@@ -35,7 +42,7 @@ function App({ Component, pageProps }: AppProps) {
             </Head>
             <ThemeProvider theme={theme}>
                 <AppContainer>
-                    <Header user={userState.user} />
+                    <Header user={userState.user} onLogout={onLogout} />
                     <main>
                         {canShow() ? (
                             <Component {...pageProps} />
